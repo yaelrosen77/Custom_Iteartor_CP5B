@@ -9,7 +9,10 @@ namespace ariel{
         public:
             MysticalElement(int val): value{val}, nextCross{nullptr}{}
             int getVal() const {return value;}
+            int getidx() const {return crossidx;}
+            void setidx(int tmp){crossidx = tmp; }
             MysticalElement* getCross(){return nextCross;}
+            void setCross(MysticalElement* thing){nextCross = thing;}
     };
 
     class MysticalPrimeElement : public MysticalElement{

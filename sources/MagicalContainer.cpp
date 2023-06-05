@@ -35,6 +35,8 @@ void MagicalContainer :: addElement(int abb){
 void MagicalContainer :: insertPrime(MysticalPrimeElement& thing){
     
 }
+
+
 //later change to private 
 void MagicalContainer :: insert(MysticalElement& thing){
     if (contsize==0)
@@ -59,29 +61,54 @@ void MagicalContainer :: insert(MysticalElement& thing){
             }
         }
     }
+    contsize++;                                         //finish inserting values
     
+    if (contsize==1){                                          //thing is the only element in the container
+        thing.setidx(1);
+        thing.setCross(nullptr);
+    }
+
+    else if (contsize ==2){
+        iteratia[0].setidx(1);
+        iteratia[0].setCross(&(iteratia[1]));
+        iteratia[1].setidx(2);
+        iteratia[1].setCross(nullptr);
+    }
+
+    else {
+        int counter = 1;
+        int i =0;
+        int j= contsize -1;
+        MysticalElement * tmp = nullptr;
+
+        while(i<j){
+            if (tmp!=nullptr)
+                tmp->setCross(&iteratia[i]);
+            MysticalElement* tmp1 = &iteratia[i];
+            MysticalElement* tmp2 = &iteratia[j];
+            tmp1->setidx(counter++);
+            tmp1->setCross(tmp2);
+            tmp2->setidx(counter);
+            tmp = tmp2;
+            i++;
+            j--;
+        }
+        if (i==j){
+            tmp->setCross(&iteratia[i]);
+            iteratia[i].setidx(i);
+            iteratia[i].setCross(nullptr);
+        }
+        else {
+            tmp->setCross(nullptr);
+        }
 
 }
 
 
-//     for (int i=0; i<contsize; i++){
-//         if (i == 0 && iteratia[i]>abb){        //begin case 
-//             iteratia.insert(iteratia.begin(),abb);
-//             break;
-//         }
-//         if (iteratia[i] == abb)
-//             return;                                 //allready exist in the container
-//         if (iteratia[i] < abb){
-//             if (i+1==contsize){
-//                 iteratia.insert(iteratia.end(),abb);
-//                 break;
-//             }
-//             if (iteratia[i+1] > abb){
-//                 iteratia.insert(iteratia.begin()+i+1,abb);
-//                 break;
-//         }
-//     }
-//     if (contsize ==0)
-//         iteratia.insert(iteratia.begin(),abb);
-//     contsize++;
-// }
+
+
+
+
+
+}
+
