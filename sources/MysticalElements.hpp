@@ -20,5 +20,6 @@ namespace ariel{
         public: 
             MysticalPrimeElement(int val): MysticalElement(val), nextPrime{nullptr}{}
             MysticalPrimeElement* getNextPrime(){return nextPrime;}
+            void SetNextPrime(MysticalPrimeElement* pr1){nextPrime = pr1;}
     };
 }

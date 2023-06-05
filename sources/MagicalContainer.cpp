@@ -33,7 +33,29 @@ void MagicalContainer :: addElement(int abb){
 
 
 void MagicalContainer :: insertPrime(MysticalPrimeElement& thing){
-    
+    MysticalElement* tmp = &thing;
+    insert(*tmp);
+
+    if (prim == nullptr){
+        prim = &thing;
+        return;
+    }
+    MysticalPrimeElement ** mpe = &prim;
+    if (prim->getVal() > thing.getVal()){
+        prim = &thing;
+        thing.SetNextPrime(*mpe);
+        return;
+    }            
+    while ((*mpe)->getNextPrime() != NULL){
+        if ((*mpe)->getVal() < thing.getVal() && (*mpe)->getNextPrime()->getVal()> thing.getVal()){
+            MysticalPrimeElement* thi = (*mpe)->getNextPrime();
+            (*mpe)->SetNextPrime(&thing);
+            thing.SetNextPrime(thi);
+            return;
+        }
+        *mpe = (*mpe)->getNextPrime();
+    }    
+    (*mpe)->SetNextPrime(&thing);
 }
 
 
