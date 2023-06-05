@@ -6,13 +6,19 @@ int main() {
     // Create a MagicalContainer and add some elements
     MagicalContainer container;
     container.addElement(17);
+    cout << "***********************************" <<endl << endl; 
     container.addElement(2);
+    cout << "***********************************" <<endl << endl; 
     container.addElement(25);
+    cout << "***********************************" <<endl << endl; 
     container.addElement(9);
+    cout << "***********************************" <<endl << endl; 
     container.addElement(3);
+    cout << "***********************************" <<endl << endl; 
 
     // // Print container size
     // std::cout << "Size of container: " << container.size() << std::endl;
+
 
     // // Use AscendingIterator to display elements in ascending order
     // std::cout << "Elements in ascending order:\n";

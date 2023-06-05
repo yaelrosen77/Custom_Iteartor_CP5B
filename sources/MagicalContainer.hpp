@@ -10,15 +10,15 @@ namespace ariel{
 
 class MagicalContainer{
     vector<MysticalElement> iteratia;
-    int contsize;
     MysticalPrimeElement* prim; 
+    int contsize;
 
     public: 
         MagicalContainer() : contsize(0), prim(nullptr){}
         ~MagicalContainer(){}
         MagicalContainer(MagicalContainer&& other) = default;
         MagicalContainer(MagicalContainer& other);
-        void addElement(int abb){}
+        void addElement(int abb);
         void insertPrime(MysticalPrimeElement& thing);
         void insert(MysticalElement& thing);
         void removeElement(int bbb){}
