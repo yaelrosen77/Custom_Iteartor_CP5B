@@ -9,7 +9,7 @@ using namespace ariel;
 namespace ariel{
 
 class MagicalContainer{
-    vector<MysticalElement> iteratia;
+    vector<MysticalElement*> iteratia;
     MysticalPrimeElement* prim; 
     int contsize;
 
@@ -19,8 +19,8 @@ class MagicalContainer{
         MagicalContainer(MagicalContainer&& other) = default;
         MagicalContainer(MagicalContainer& other);
         void addElement(int abb);
-        void insertPrime(MysticalPrimeElement& thing);
-        void insert(MysticalElement& thing);
+        void insertPrime(MysticalPrimeElement* thing);
+        void insert(MysticalElement* thing);
         void removeElement(int bbb){}
         int size() const{return contsize;}
         MagicalContainer& operator=(MagicalContainer&& other) noexcept;
