@@ -88,9 +88,60 @@ void MagicalContainer :: insert(MysticalElement* thing){
         }
     }
     contsize++;                                         //finish inserting values
+    setCross();
+}
 
+void MagicalContainer :: removeElement(int bbb) {
+    int index = -1;
+    for (unsigned int i = 0; i < contsize; i++) {
+        if (iteratia[i]->getVal() == bbb) {
+            index = (int) i;
+            break;
+        }
+    }
+    if (index == -1)
+        return;
+    if (isPrime(bbb))
+        updatePrime(index);
+
+    MysticalElement *del = iteratia[(unsigned int)index];
+    iteratia.erase(iteratia.begin() + index);
+    contsize--;
+    setCross();
+    delete del;
+}
+
+void MagicalContainer ::updatePrime(int index) {
+    MysticalPrimeElement *tmp2 = prim;
+    MysticalPrimeElement *tmp1 = prim;
+    for (int i = 0; i < numofprimes; i++) {
+        if (tmp1->getVal() == iteratia[(unsigned int)index]->getVal()) {
+            if (i == 0) {
+                prim = tmp1->getNextPrime();
+                numofprimes--;
+                break;
+            }
+            if (i < numofprimes - 1) {
+                tmp2->SetNextPrime(tmp1->getNextPrime());
+                numofprimes--;
+                break;
+            }
+            if (i == numofprimes - 1) {
+                tmp2->SetNextPrime(nullptr);
+                numofprimes--;
+                break;
+            }
+        }
+        tmp1 = tmp1->getNextPrime();
+        if (i > 0) {
+            tmp2 = tmp2->getNextPrime();
+        }
+    }
+}
+
+void MagicalContainer :: setCross(){
     if (contsize==1){                                          //thing is the only element in the container
-        thing->setCross(nullptr);
+        iteratia[0]->setCross(nullptr);
     }
 
     else if (contsize == 2){
@@ -124,25 +175,20 @@ void MagicalContainer :: insert(MysticalElement* thing){
     }
 }
 
-MagicalContainer :: AscendingIterator :: AscendingIterator(MagicalContainer& cont): conti(cont){
-    if (conti.size()==0){
-        current = -1;
-    }
-    else current = 0;
-}
-
 bool MagicalContainer :: AscendingIterator :: operator ==(const AscendingIterator& other) const{
     return (current == other.current);
 }
 
 MagicalContainer :: AscendingIterator MagicalContainer :: AscendingIterator :: end(){
-    AscendingIterator itr = *this;
-    itr.current = (unsigned int)itr.conti.size();
+    AscendingIterator itr(conti);
+    itr.current = (unsigned int)conti.size();
     return itr;
 }
 
-const int :: MagicalContainer :: AscendingIterator :: operator*() const{
-    return conti.iteratia[current]->getVal();
+int& :: MagicalContainer :: AscendingIterator :: operator*() const{
+    int *shos;
+    *shos = conti.iteratia[current]->getVal();
+    return *shos;
 }
 
 bool :: MagicalContainer :: AscendingIterator :: operator != (const AscendingIterator& other) const{
@@ -168,25 +214,26 @@ MagicalContainer :: SideCrossIterator :: SideCrossIterator(MagicalContainer& con
     }
 }
 
-bool MagicalContainer :: SideCrossIterator :: operator ==(const SideCrossIterator& other){
+bool MagicalContainer :: SideCrossIterator :: operator ==(const SideCrossIterator& other) const{
     return (idx==other.idx);
 }
 
-bool MagicalContainer :: SideCrossIterator :: operator != (const SideCrossIterator& other){
+bool MagicalContainer :: SideCrossIterator :: operator != (const SideCrossIterator& other) const{
     return (idx!=other.idx);
 }
 
-bool MagicalContainer :: SideCrossIterator :: operator> (const SideCrossIterator& other){
+bool MagicalContainer :: SideCrossIterator :: operator> (const SideCrossIterator& other) const {
     return (idx>other.idx);
 }
 
-bool MagicalContainer :: SideCrossIterator :: operator<(const SideCrossIterator& other) {
+bool MagicalContainer :: SideCrossIterator :: operator<(const SideCrossIterator& other) const {
     return !(idx<other.idx);
 }
 
-const int MagicalContainer :: SideCrossIterator :: operator*() const {
-    if (next!= nullptr)
-        return next->getVal();
+int& MagicalContainer :: SideCrossIterator :: operator*() const{
+    int* tmp;
+    *tmp = next->getVal();
+    return *tmp;
 }
 
 MagicalContainer :: SideCrossIterator& MagicalContainer :: SideCrossIterator :: operator++(){
@@ -215,28 +262,33 @@ MagicalContainer :: PrimeIterator :: PrimeIterator(MagicalContainer& cont) : con
     }
 }
 
-bool MagicalContainer :: PrimeIterator :: operator ==(const PrimeIterator& other){
+bool MagicalContainer :: PrimeIterator :: operator ==(const PrimeIterator& other) const{
     return (idx==other.idx);
 }
 
-bool MagicalContainer :: PrimeIterator :: operator != (const PrimeIterator& other){
+bool MagicalContainer :: PrimeIterator :: operator != (const PrimeIterator& other) const{
     return (idx!=other.idx);
 }
-bool MagicalContainer :: PrimeIterator :: operator >(const PrimeIterator& other){
+bool MagicalContainer :: PrimeIterator :: operator >(const PrimeIterator& other)const {
     return (idx>other.idx);
 }
 
-bool MagicalContainer :: PrimeIterator :: operator <(const PrimeIterator& other){
+bool MagicalContainer :: PrimeIterator :: operator <(const PrimeIterator& other)const {
     return (idx<other.idx);
 }
-const int MagicalContainer :: PrimeIterator :: operator*() const{
-    return current->getVal();
+
+int& MagicalContainer :: PrimeIterator :: operator*() const{
+    int *tmp;
+    *tmp = current->getVal();
+    return *tmp;
 }
+
 MagicalContainer :: PrimeIterator& MagicalContainer :: PrimeIterator :: operator++(){
     if (current!= nullptr){
         current = current->getNextPrime();
         idx++;
     }
+    return *this;
 }
 
 MagicalContainer :: PrimeIterator MagicalContainer :: PrimeIterator :: end() {
