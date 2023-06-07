@@ -16,11 +16,47 @@ bool ariel :: isPrime(int n){
     return true;
 }
 
-MagicalContainer :: MagicalContainer(MagicalContainer& other){          //to change it later
-    contsize = other.contsize;
-    iteratia = other.iteratia;
-    prim = other.prim;
+MagicalContainer :: ~MagicalContainer(){
+    for (unsigned int i=0; i<contsize;i++)
+        iteratia[i]->setCross(nullptr);
+    MysticalPrimeElement* tmp = prim;
+    while (tmp != nullptr) {
+        MysticalPrimeElement* next = tmp->getNextPrime();
+        tmp->SetNextPrime(nullptr);  // Set nextPrime pointer to nullptr
+        tmp = next;
+    }
+    prim = nullptr;
+    for (unsigned int i=0; i<contsize; i++){
+        delete iteratia[i];
+    }
+    iteratia.clear();
 }
+
+MagicalContainer& MagicalContainer :: operator=(const MagicalContainer& other) {
+    if (this == &other) {
+        return *this;  // Self-assignment, no need to perform further steps
+    }
+    iteratia = other.iteratia;
+    contsize = other.contsize;
+    prim = other.prim;
+    numofprimes = other.numofprimes;
+    return *this;
+}
+
+MysticalPrimeElement& MysticalPrimeElement::operator=(const MysticalPrimeElement& other) {
+    if (this != &other) {
+        MysticalElement::operator=(other); 
+    }
+    return *this;
+}
+
+MysticalPrimeElement& MysticalPrimeElement::operator=(MysticalPrimeElement&& other) noexcept {
+    if (this != &other) {
+        MysticalElement::operator=(std::move(other));
+    }
+    return *this;
+}
+
 
 void MagicalContainer :: addElement(int abb){
     for (unsigned int i=0; i<contsize; i++){                    //checking if the curr val exist in the container
@@ -63,7 +99,6 @@ void MagicalContainer :: insertPrime(MysticalPrimeElement* thing){
     mpe->SetNextPrime(thing);
 }
 
-//later change to private
 void MagicalContainer :: insert(MysticalElement* thing){
     if (contsize==0)
         iteratia.insert(iteratia.begin(),thing);
@@ -138,6 +173,7 @@ void MagicalContainer ::updatePrime(int index) {
         }
     }
 }
+
 
 void MagicalContainer :: setCross(){
     if (contsize==1){                                          //thing is the only element in the container

@@ -8,11 +8,6 @@ int main() {
     MagicalContainer container;
     container.addElement(17);
     container.addElement(2);
-    container.addElement(25);
-    vector<MysticalElement*> iter = container.getIteratia();
-    cout << iter[0]->getVal() << endl; 
-    cout << iter[1]->getVal() << endl; 
-    container.addElement(9);
     container.addElement(3);
 
     // Print container size

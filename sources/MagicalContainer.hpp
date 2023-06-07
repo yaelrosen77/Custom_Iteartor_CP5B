@@ -20,15 +20,15 @@ namespace ariel{
 
     public:
         MagicalContainer() : contsize(0), prim(nullptr), numofprimes(0){}
-        ~MagicalContainer(){}
+        ~MagicalContainer();
         MagicalContainer(MagicalContainer&& other) = default;
-        MagicalContainer(MagicalContainer& other);
+        MagicalContainer(MagicalContainer& other) noexcept : contsize(other.contsize), 
+        numofprimes(other.numofprimes), prim(other.prim), iteratia(other.iteratia){}
         void addElement(int abb);
         void removeElement(int bbb);
         int size() const{return contsize;}
         MagicalContainer& operator=(MagicalContainer&& other) noexcept;
-        MagicalContainer& operator=(const MagicalContainer &other){return *this;}
-        vector<MysticalElement*> getIteratia(){return iteratia;} //remove this
+        MagicalContainer& operator=(const MagicalContainer &other);
         MysticalPrimeElement* getprim(){return prim;}
 
 
@@ -84,7 +84,7 @@ namespace ariel{
 
              public:
                  PrimeIterator(MagicalContainer& cont);
-                 PrimeIterator(const PrimeIterator &other) :conti(other.conti), idx(other.idx){}
+                 PrimeIterator(const PrimeIterator &other) :conti(other.conti), idx(other.idx), current(other.current){}
                  PrimeIterator(PrimeIterator&& other) = default;
                  PrimeIterator& operator=(const PrimeIterator& other);
                  ~PrimeIterator() = default;
