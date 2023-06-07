@@ -35,15 +35,15 @@ namespace ariel{
         class AscendingIterator{
             MagicalContainer& conti;
             unsigned int current;
+            AscendingIterator& operator=(AscendingIterator&& other) = delete;
 
         public:
             AscendingIterator(MagicalContainer& cont) : conti(cont), current(0){}
             AscendingIterator(const AscendingIterator &other):
                     conti(other.conti),current(other.current){}
             AscendingIterator(AscendingIterator&& other) = default;
-            AscendingIterator& operator=(AscendingIterator&& other) = delete;
             ~AscendingIterator() = default;
-            AscendingIterator& operator=(const AscendingIterator& other) = delete;
+            AscendingIterator& operator=(const AscendingIterator& other);
             bool operator ==(const AscendingIterator& other) const;
             bool operator != (const AscendingIterator& other) const;
             bool operator >(const AscendingIterator& other) const;
@@ -57,13 +57,14 @@ namespace ariel{
              MagicalContainer& conti;
              MysticalElement* next;
              int idx;
+             SideCrossIterator& operator=(SideCrossIterator&& other) = delete;
+
 
              public:
              SideCrossIterator(MagicalContainer& cont);
              SideCrossIterator(const SideCrossIterator &other): conti(other.conti), next(other.next), idx(other.idx){}
              SideCrossIterator(SideCrossIterator&& other) = default;
-             SideCrossIterator& operator=(SideCrossIterator&& other) = delete;
-             SideCrossIterator& operator=(const SideCrossIterator& other) = delete;
+             SideCrossIterator& operator=(const SideCrossIterator& other);
              ~SideCrossIterator() = default;
              bool operator ==(const SideCrossIterator& other) const;
              bool operator != (const SideCrossIterator& other) const;
@@ -78,14 +79,14 @@ namespace ariel{
          class PrimeIterator{
              MagicalContainer& conti;
              MysticalPrimeElement* current;
+            PrimeIterator& operator=(PrimeIterator&& other) = delete;
              int idx;
 
              public:
                  PrimeIterator(MagicalContainer& cont);
                  PrimeIterator(const PrimeIterator &other) :conti(other.conti), idx(other.idx){}
                  PrimeIterator(PrimeIterator&& other) = default;
-                 PrimeIterator& operator=(PrimeIterator&& other) = delete;
-                 PrimeIterator& operator=(const PrimeIterator& other) = delete;
+                 PrimeIterator& operator=(const PrimeIterator& other);
                  ~PrimeIterator() = default;
                  bool operator ==(const PrimeIterator& other) const;
                  bool operator != (const PrimeIterator& other) const;

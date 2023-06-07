@@ -203,6 +203,12 @@ bool :: MagicalContainer :: AscendingIterator :: operator <(const AscendingItera
     return !(*this>other);
 }
 
+MagicalContainer :: AscendingIterator& MagicalContainer :: AscendingIterator :: operator=(const AscendingIterator& other){
+    if (&conti != &(other.conti))
+        throw runtime_error("Ilegall assignment");
+    current = other.current;
+}
+
 MagicalContainer :: SideCrossIterator :: SideCrossIterator(MagicalContainer& cont): conti(cont){
     if (conti.contsize == 0){
         next = nullptr;
@@ -235,6 +241,14 @@ int& MagicalContainer :: SideCrossIterator :: operator*() const{
     *tmp = next->getVal();
     return *tmp;
 }
+
+MagicalContainer :: SideCrossIterator& MagicalContainer :: SideCrossIterator :: operator=(const SideCrossIterator& other){
+    if (&conti != &(other.conti))
+        throw runtime_error("Ilegall assignment");
+    idx = other.idx;
+    next = other.next;
+}
+
 
 MagicalContainer :: SideCrossIterator& MagicalContainer :: SideCrossIterator :: operator++(){
     if (next != nullptr) {
@@ -298,3 +312,9 @@ MagicalContainer :: PrimeIterator MagicalContainer :: PrimeIterator :: end() {
     return tmp;
 }
 
+MagicalContainer :: PrimeIterator& MagicalContainer :: PrimeIterator :: operator=(const PrimeIterator& other){
+    if (&conti != &other.conti)
+        throw runtime_error("Ilegall assignment");
+    idx = other.idx;
+    current = other.current;
+}
