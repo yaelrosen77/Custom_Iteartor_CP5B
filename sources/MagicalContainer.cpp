@@ -36,8 +36,6 @@ void MagicalContainer :: addElement(int abb){
     insert(mist);
 }
 
-
-
 void MagicalContainer :: insertPrime(MysticalPrimeElement* thing){
     MysticalElement * ptr1;
     ptr1 = thing;
@@ -84,7 +82,7 @@ void MagicalContainer :: insert(MysticalElement* thing){
                 }
             }
             else {
-                iteratia.insert(iteratia.end(),thing);
+                iteratia.insert(iteratia.begin()+contsize,thing);
                 break;
             }
         }
@@ -92,14 +90,11 @@ void MagicalContainer :: insert(MysticalElement* thing){
     contsize++;                                         //finish inserting values
 
     if (contsize==1){                                          //thing is the only element in the container
-        thing->setidx(1);
         thing->setCross(nullptr);
     }
 
     else if (contsize == 2){
-        iteratia[0]->setidx(1);
         iteratia[0]->setCross((iteratia[1]));
-        iteratia[1]->setidx(2);
         iteratia[1]->setCross(nullptr);
     }
 
@@ -114,35 +109,32 @@ void MagicalContainer :: insert(MysticalElement* thing){
                 tmp->setCross(iteratia[i]);
             MysticalElement* tmp1 = iteratia[i];
             MysticalElement* tmp2 = iteratia[j];
-            tmp1->setidx(counter++);
             tmp1->setCross(tmp2);
-            tmp2->setidx(counter++);
             tmp = tmp2;
             i++;
             j--;
         }
         if (i==j){
             tmp->setCross(iteratia[i]);
-            iteratia[i]->setidx((int)i);
             iteratia[i]->setCross(nullptr);
+            end = iteratia[i];
         }
         else {
             tmp->setCross(nullptr);
+            end = tmp;
         }
     }
 }
 
 MagicalContainer :: AscendingIterator :: AscendingIterator(MagicalContainer& cont): conti(cont){
-    if (conti.size()>0){
-        current = 0;
+    if (conti.size()==0){
+        current = -1;
     }
-    else current = 1;
+    else current = 0;
 }
 
 bool MagicalContainer :: AscendingIterator :: operator ==(const AscendingIterator& other) const{
-    int em1 = conti.iteratia[current]->getVal();
-    int em2 = *other;
-    return (em1==em2);
+    return (current == other.current);
 }
 
 MagicalContainer :: AscendingIterator MagicalContainer :: AscendingIterator :: end(){
@@ -160,13 +152,57 @@ bool :: MagicalContainer :: AscendingIterator :: operator != (const AscendingIte
 }
 
 bool :: MagicalContainer :: AscendingIterator :: operator >(const AscendingIterator& other) const{
-    int em1 = conti.iteratia[current]->getVal();
-    int em2 = *other;
-    return (em1>em2);
+    return (current > other.current);
 }
 
 bool :: MagicalContainer :: AscendingIterator :: operator <(const AscendingIterator& other) const{
     return !(*this>other);
 }
 
+MagicalContainer :: SideCrossIterator :: SideCrossIterator(MagicalContainer& cont): conti(cont){
+    if (conti.contsize == 0){
+        next = nullptr;
+        idx = -1;
+    }
+    else {
+        next = conti.iteratia[0];
+        idx = 0;
+    }
+}
+
+bool MagicalContainer :: SideCrossIterator :: operator ==(const SideCrossIterator& other){
+    return (idx==other.idx);
+}
+
+bool MagicalContainer :: SideCrossIterator :: operator != (const SideCrossIterator& other){
+    return (idx!=other.idx);
+}
+
+bool MagicalContainer :: SideCrossIterator :: operator> (const SideCrossIterator& other){
+    return (idx>other.idx);
+}
+
+bool MagicalContainer :: SideCrossIterator :: operator<(const SideCrossIterator& other) {
+    return !(idx<other.idx);
+}
+
+const int MagicalContainer :: SideCrossIterator :: operator*() const {
+    if (next!= nullptr)
+        return next->getVal();
+}
+
+MagicalContainer :: SideCrossIterator& MagicalContainer :: SideCrossIterator :: operator++(){
+    if (next != nullptr) {
+        next = next->getCross();
+        idx++;
+    }
+    return *this;
+}
+
+MagicalContainer :: SideCrossIterator MagicalContainer :: SideCrossIterator :: end() {
+    MagicalContainer :: SideCrossIterator tmp(conti);
+    tmp.next = nullptr;
+    tmp.idx = conti.size();
+    return tmp;
+}
 
