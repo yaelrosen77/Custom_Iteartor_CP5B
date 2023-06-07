@@ -4,47 +4,51 @@
 #include <cmath>
 using namespace std;
 #include "MysticalElements.hpp"
-using namespace ariel; 
+using namespace ariel;
 
 namespace ariel{
 
-class MagicalContainer{
-    vector<MysticalElement*> iteratia;
-    MysticalPrimeElement* prim; 
-    int contsize;
+    class MagicalContainer{
+        vector<MysticalElement*> iteratia;
+        MysticalPrimeElement* prim;
+        void insertPrime(MysticalPrimeElement* thing);
+        void insert(MysticalElement* thing);
+        int contsize;
 
-    public: 
+    public:
         MagicalContainer() : contsize(0), prim(nullptr){}
         ~MagicalContainer(){}
         MagicalContainer(MagicalContainer&& other) = default;
         MagicalContainer(MagicalContainer& other);
         void addElement(int abb);
-        void insertPrime(MysticalPrimeElement* thing);
-        void insert(MysticalElement* thing);
         void removeElement(int bbb){}
         int size() const{return contsize;}
         MagicalContainer& operator=(MagicalContainer&& other) noexcept;
         MagicalContainer& operator=(const MagicalContainer &other){return *this;}
+        vector<MysticalElement*> getIteratia(){return iteratia;} //remove this
+        MysticalPrimeElement* getprim(){return prim;}
+
 
         class AscendingIterator{
             MagicalContainer& conti;
-            int idx;
-            public:
-                AscendingIterator(MagicalContainer& cont) : conti(cont),idx(0){}
-                AscendingIterator(const AscendingIterator &other):conti(other.conti),idx(other.idx){}
-                AscendingIterator(AscendingIterator&& other) = default;
-                AscendingIterator& operator=(AscendingIterator&& other) = delete;
-                ~AscendingIterator() = default;
-                AscendingIterator& operator=(const AscendingIterator& other) = delete;
-                bool operator ==(const AscendingIterator& other){return false;}
-                bool operator != (const AscendingIterator& other){return false;}
-                bool operator >(const AscendingIterator& other){return false;}
-                bool operator <(const AscendingIterator& other){return false;}
-                int& operator*() const {return conti.contsize;}
-                AscendingIterator& operator++(){return *this;}
-                AscendingIterator begin(){return AscendingIterator(conti);}
-                AscendingIterator end(){AscendingIterator itr = *this;
-                return itr;}
+            unsigned int current;
+
+        public:
+            AscendingIterator(MagicalContainer& cont);
+            AscendingIterator(const AscendingIterator &other):
+                    conti(other.conti),current(other.current){}
+            AscendingIterator(AscendingIterator&& other) = default;
+            AscendingIterator& operator=(AscendingIterator&& other) = delete;
+            ~AscendingIterator() = default;
+            AscendingIterator& operator=(const AscendingIterator& other) = delete;
+            bool operator ==(const AscendingIterator& other) const;
+            bool operator != (const AscendingIterator& other) const;
+            bool operator >(const AscendingIterator& other) const;
+            bool operator <(const AscendingIterator& other) const;
+            const int operator*() const;
+            AscendingIterator& operator++(){current++; return *this;}
+            AscendingIterator begin(){return AscendingIterator(conti);}
+            AscendingIterator end();
         };
 //         class SideCrossIterator{
 //             MagicalContainer& conti;
@@ -68,13 +72,13 @@ class MagicalContainer{
 
 //         class PrimeIterator{
 //             MagicalContainer& conti;
-            
+
 //             public:
 //                 PrimeIterator(MagicalContainer& cont): conti(cont){}
 //                 PrimeIterator(const PrimeIterator &other) :conti(other.conti){}
 //                 PrimeIterator(PrimeIterator&& other) = default;
 //                 PrimeIterator& operator=(PrimeIterator&& other) = delete;
-//                 PrimeIterator& operator=(const PrimeIterator& other) = delete; 
+//                 PrimeIterator& operator=(const PrimeIterator& other) = delete;
 //                 ~PrimeIterator() = default;
 //                 bool operator ==(const PrimeIterator& other){return false;}
 //                 bool operator != (const PrimeIterator& other){return false;}
@@ -89,6 +93,6 @@ class MagicalContainer{
 // };
 
     };
-    
+
     bool isPrime(int n);
 }

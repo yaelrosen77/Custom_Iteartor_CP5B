@@ -1,3 +1,6 @@
+//
+// Created by vboxuser on 6/7/23.
+//
 #include "MagicalContainer.hpp"
 using namespace ariel;
 
@@ -29,13 +32,16 @@ void MagicalContainer :: addElement(int abb){
         insertPrime(mist);
         return;
     }
-    MysticalElement* mist = new MysticalElement(abb);                      //creating mystical element with value 
+    MysticalElement* mist = new MysticalElement(abb);                      //creating mystical element with value
     insert(mist);
 }
 
 
+
 void MagicalContainer :: insertPrime(MysticalPrimeElement* thing){
-    insert(thing);
+    MysticalElement * ptr1;
+    ptr1 = thing;
+    insert(ptr1);
     if (prim == nullptr){
         prim = thing;
         return;
@@ -45,8 +51,8 @@ void MagicalContainer :: insertPrime(MysticalPrimeElement* thing){
         prim = thing;
         thing->SetNextPrime(mpe);
         return;
-    }            
-    while (mpe->getNextPrime() != NULL){
+    }
+    while (mpe->getNextPrime() != nullptr){
         if (mpe->getVal() < thing->getVal() && mpe->getNextPrime()->getVal()> thing->getVal()){
             MysticalPrimeElement* thi = mpe->getNextPrime();
             mpe->SetNextPrime(thing);
@@ -54,12 +60,12 @@ void MagicalContainer :: insertPrime(MysticalPrimeElement* thing){
             return;
         }
         mpe = mpe->getNextPrime();
-    }    
+    }
     mpe->SetNextPrime(thing);
 }
 
 
-//later change to private 
+//later change to private
 void MagicalContainer :: insert(MysticalElement* thing){
     if (contsize==0)
         iteratia.insert(iteratia.begin(),thing);
@@ -84,7 +90,7 @@ void MagicalContainer :: insert(MysticalElement* thing){
         }
     }
     contsize++;                                         //finish inserting values
-    
+
     if (contsize==1){                                          //thing is the only element in the container
         thing->setidx(1);
         thing->setCross(nullptr);
@@ -123,8 +129,44 @@ void MagicalContainer :: insert(MysticalElement* thing){
         else {
             tmp->setCross(nullptr);
         }
-
     }
-
 }
+
+MagicalContainer :: AscendingIterator :: AscendingIterator(MagicalContainer& cont): conti(cont){
+    if (conti.size()>0){
+        current = 0;
+    }
+    else current = 1;
+}
+
+bool MagicalContainer :: AscendingIterator :: operator ==(const AscendingIterator& other) const{
+    int em1 = conti.iteratia[current]->getVal();
+    int em2 = *other;
+    return (em1==em2);
+}
+
+MagicalContainer :: AscendingIterator MagicalContainer :: AscendingIterator :: end(){
+    AscendingIterator itr = *this;
+    itr.current = (unsigned int)itr.conti.size();
+    return itr;
+}
+
+const int :: MagicalContainer :: AscendingIterator :: operator*() const{
+    return conti.iteratia[current]->getVal();
+}
+
+bool :: MagicalContainer :: AscendingIterator :: operator != (const AscendingIterator& other) const{
+    return !(*this == other);
+}
+
+bool :: MagicalContainer :: AscendingIterator :: operator >(const AscendingIterator& other) const{
+    int em1 = conti.iteratia[current]->getVal();
+    int em2 = *other;
+    return (em1>em2);
+}
+
+bool :: MagicalContainer :: AscendingIterator :: operator <(const AscendingIterator& other) const{
+    return !(*this>other);
+}
+
 
