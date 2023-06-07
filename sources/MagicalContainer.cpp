@@ -16,7 +16,7 @@ bool ariel :: isPrime(int n){
     return true;
 }
 
-MagicalContainer :: MagicalContainer(MagicalContainer& other){
+MagicalContainer :: MagicalContainer(MagicalContainer& other){          //to change it later
     contsize = other.contsize;
     iteratia = other.iteratia;
     prim = other.prim;
@@ -28,6 +28,7 @@ void MagicalContainer :: addElement(int abb){
             return;
     }
     if ((isPrime(abb)) == true){
+        numofprimes++;
         MysticalPrimeElement* mist = new MysticalPrimeElement(abb);            //creating a new magical stone with desired value
         insertPrime(mist);
         return;
@@ -61,7 +62,6 @@ void MagicalContainer :: insertPrime(MysticalPrimeElement* thing){
     }
     mpe->SetNextPrime(thing);
 }
-
 
 //later change to private
 void MagicalContainer :: insert(MysticalElement* thing){
@@ -117,11 +117,9 @@ void MagicalContainer :: insert(MysticalElement* thing){
         if (i==j){
             tmp->setCross(iteratia[i]);
             iteratia[i]->setCross(nullptr);
-            end = iteratia[i];
         }
         else {
             tmp->setCross(nullptr);
-            end = tmp;
         }
     }
 }
@@ -203,6 +201,48 @@ MagicalContainer :: SideCrossIterator MagicalContainer :: SideCrossIterator :: e
     MagicalContainer :: SideCrossIterator tmp(conti);
     tmp.next = nullptr;
     tmp.idx = conti.size();
+    return tmp;
+}
+
+MagicalContainer :: PrimeIterator :: PrimeIterator(MagicalContainer& cont) : conti(cont){
+    if (conti.numofprimes==0) {
+        current = nullptr;
+        idx = -1;
+    }
+    else {
+        current = conti.getprim();
+        idx = 0;
+    }
+}
+
+bool MagicalContainer :: PrimeIterator :: operator ==(const PrimeIterator& other){
+    return (idx==other.idx);
+}
+
+bool MagicalContainer :: PrimeIterator :: operator != (const PrimeIterator& other){
+    return (idx!=other.idx);
+}
+bool MagicalContainer :: PrimeIterator :: operator >(const PrimeIterator& other){
+    return (idx>other.idx);
+}
+
+bool MagicalContainer :: PrimeIterator :: operator <(const PrimeIterator& other){
+    return (idx<other.idx);
+}
+const int MagicalContainer :: PrimeIterator :: operator*() const{
+    return current->getVal();
+}
+MagicalContainer :: PrimeIterator& MagicalContainer :: PrimeIterator :: operator++(){
+    if (current!= nullptr){
+        current = current->getNextPrime();
+        idx++;
+    }
+}
+
+MagicalContainer :: PrimeIterator MagicalContainer :: PrimeIterator :: end() {
+    PrimeIterator tmp(conti);
+    tmp.current = nullptr;
+    tmp.idx = conti.numofprimes;
     return tmp;
 }
 

@@ -11,13 +11,13 @@ namespace ariel{
     class MagicalContainer{
         vector<MysticalElement*> iteratia;
         MysticalPrimeElement* prim;
-        MysticalElement* end;
+        int numofprimes;
         void insertPrime(MysticalPrimeElement* thing);
         void insert(MysticalElement* thing);
         int contsize;
 
     public:
-        MagicalContainer() : contsize(0), prim(nullptr){}
+        MagicalContainer() : contsize(0), prim(nullptr), numofprimes(0){}
         ~MagicalContainer(){}
         MagicalContainer(MagicalContainer&& other) = default;
         MagicalContainer(MagicalContainer& other);
@@ -75,22 +75,24 @@ namespace ariel{
 
          class PrimeIterator{
              MagicalContainer& conti;
+             MysticalPrimeElement* current;
+             int idx;
 
              public:
-                 PrimeIterator(MagicalContainer& cont): conti(cont){}
-                 PrimeIterator(const PrimeIterator &other) :conti(other.conti){}
+                 PrimeIterator(MagicalContainer& cont);
+                 PrimeIterator(const PrimeIterator &other) :conti(other.conti), idx(other.idx){}
                  PrimeIterator(PrimeIterator&& other) = default;
                  PrimeIterator& operator=(PrimeIterator&& other) = delete;
                  PrimeIterator& operator=(const PrimeIterator& other) = delete;
                  ~PrimeIterator() = default;
-                 bool operator ==(const PrimeIterator& other){return false;}
-                 bool operator != (const PrimeIterator& other){return false;}
-                 bool operator >(const PrimeIterator& other){return false;}
-                 bool operator <(const PrimeIterator& other){return false;}
-                 int& operator*() const {return conti.contsize;}
-                 PrimeIterator& operator++(){return *this;}
-                 PrimeIterator begin(){return *this;}
-                 PrimeIterator end(){return *this;}
+                 bool operator ==(const PrimeIterator& other);
+                 bool operator != (const PrimeIterator& other);
+                 bool operator >(const PrimeIterator& other);
+                 bool operator <(const PrimeIterator& other);
+                 const int operator*() const;
+                 PrimeIterator& operator++();
+                 PrimeIterator begin(){PrimeIterator tmp(conti); return tmp;}
+                 PrimeIterator end();
          };
 
  };
