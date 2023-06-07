@@ -49,7 +49,7 @@ namespace ariel{
             bool operator >(const AscendingIterator& other) const;
             bool operator <(const AscendingIterator& other) const;
             int& operator*() const;
-            AscendingIterator& operator++(){current++; return *this;}
+            AscendingIterator& operator++(); 
             AscendingIterator begin(){return AscendingIterator(conti);}
             AscendingIterator end();
         };

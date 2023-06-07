@@ -100,7 +100,7 @@ void MagicalContainer :: removeElement(int bbb) {
         }
     }
     if (index == -1)
-        return;
+        throw runtime_error("Element does not exist");
     if (isPrime(bbb))
         updatePrime(index);
 
@@ -186,9 +186,7 @@ MagicalContainer :: AscendingIterator MagicalContainer :: AscendingIterator :: e
 }
 
 int& :: MagicalContainer :: AscendingIterator :: operator*() const{
-    int *shos;
-    *shos = conti.iteratia[current]->getVal();
-    return *shos;
+    return conti.iteratia[current]->getVal();
 }
 
 bool :: MagicalContainer :: AscendingIterator :: operator != (const AscendingIterator& other) const{
@@ -200,14 +198,23 @@ bool :: MagicalContainer :: AscendingIterator :: operator >(const AscendingItera
 }
 
 bool :: MagicalContainer :: AscendingIterator :: operator <(const AscendingIterator& other) const{
-    return !(*this>other);
+    return ( current < other.current);
 }
 
 MagicalContainer :: AscendingIterator& MagicalContainer :: AscendingIterator :: operator=(const AscendingIterator& other){
     if (&conti != &(other.conti))
         throw runtime_error("Ilegall assignment");
     current = other.current;
+    return *this;
 }
+
+MagicalContainer :: AscendingIterator& MagicalContainer :: AscendingIterator :: operator++(){
+    if (current == conti.size())
+        throw runtime_error("Cannot increment beyond range");
+    current++; 
+    return *this;
+}
+
 
 MagicalContainer :: SideCrossIterator :: SideCrossIterator(MagicalContainer& cont): conti(cont){
     if (conti.contsize == 0){
@@ -221,6 +228,10 @@ MagicalContainer :: SideCrossIterator :: SideCrossIterator(MagicalContainer& con
 }
 
 bool MagicalContainer :: SideCrossIterator :: operator ==(const SideCrossIterator& other) const{
+    if (idx == -1 && other.idx == conti.size())
+        return true;
+    if (idx == conti.size() && other.idx == -1)
+        return true;
     return (idx==other.idx);
 }
 
@@ -233,13 +244,11 @@ bool MagicalContainer :: SideCrossIterator :: operator> (const SideCrossIterator
 }
 
 bool MagicalContainer :: SideCrossIterator :: operator<(const SideCrossIterator& other) const {
-    return !(idx<other.idx);
+    return (idx<other.idx);
 }
 
 int& MagicalContainer :: SideCrossIterator :: operator*() const{
-    int* tmp;
-    *tmp = next->getVal();
-    return *tmp;
+    return next->getVal();
 }
 
 MagicalContainer :: SideCrossIterator& MagicalContainer :: SideCrossIterator :: operator=(const SideCrossIterator& other){
@@ -247,10 +256,13 @@ MagicalContainer :: SideCrossIterator& MagicalContainer :: SideCrossIterator :: 
         throw runtime_error("Ilegall assignment");
     idx = other.idx;
     next = other.next;
+    return *this;
 }
 
 
 MagicalContainer :: SideCrossIterator& MagicalContainer :: SideCrossIterator :: operator++(){
+    if (idx == conti.size())
+        throw runtime_error("Cannot increment beyond range");
     if (next != nullptr) {
         next = next->getCross();
         idx++;
@@ -277,6 +289,10 @@ MagicalContainer :: PrimeIterator :: PrimeIterator(MagicalContainer& cont) : con
 }
 
 bool MagicalContainer :: PrimeIterator :: operator ==(const PrimeIterator& other) const{
+    if (idx==-1 && other.idx == conti.numofprimes)
+        return true;
+    if (idx == conti.numofprimes && other.idx == -1)
+        return true;
     return (idx==other.idx);
 }
 
@@ -287,17 +303,17 @@ bool MagicalContainer :: PrimeIterator :: operator >(const PrimeIterator& other)
     return (idx>other.idx);
 }
 
-bool MagicalContainer :: PrimeIterator :: operator <(const PrimeIterator& other)const {
+bool MagicalContainer :: PrimeIterator :: operator <(const PrimeIterator& other) const {
     return (idx<other.idx);
 }
 
 int& MagicalContainer :: PrimeIterator :: operator*() const{
-    int *tmp;
-    *tmp = current->getVal();
-    return *tmp;
+    return current->getVal();
 }
 
 MagicalContainer :: PrimeIterator& MagicalContainer :: PrimeIterator :: operator++(){
+    if (idx == conti.numofprimes || idx == -1)
+        throw runtime_error("Cannot increment beyond range");
     if (current!= nullptr){
         current = current->getNextPrime();
         idx++;
@@ -317,4 +333,5 @@ MagicalContainer :: PrimeIterator& MagicalContainer :: PrimeIterator :: operator
         throw runtime_error("Ilegall assignment");
     idx = other.idx;
     current = other.current;
+    return *this;
 }

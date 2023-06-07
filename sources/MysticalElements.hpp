@@ -8,10 +8,11 @@ namespace ariel{
         MysticalElement *nextCross;                     
         public:
             MysticalElement(int val): value{val}, nextCross{nullptr}{}
-            int getVal() const {return value;}
+            int& getVal() {return value;}
             int getidx() const {return crossidx;}
             void setidx(int tmp){crossidx = tmp; }
             MysticalElement* getCross(){return nextCross;}
+            ~MysticalElement() {delete nextCross;}
             void setCross(MysticalElement* thing){nextCross = thing;}
     };
 
